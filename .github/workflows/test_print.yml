@@ -1,0 +1,11 @@
+name: Print Test
+on: [push]
+
+jobs:
+  test_print:
+    runs-on: ubuntu-latest
+    steps:
+      - id: get_commit
+        uses: ./
+      - name: Print Commit SHA
+        run: echo "${{ steps.get_commit.outputs.commit }}"

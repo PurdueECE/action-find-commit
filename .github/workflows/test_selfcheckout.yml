@@ -1,0 +1,12 @@
+name: Self Checkout Test
+on: [push]
+
+jobs:
+  test_print:
+    runs-on: ubuntu-latest
+    steps:
+      - id: get_commit
+        uses: ./
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_commit.outputs.commit }}
