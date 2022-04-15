@@ -39,6 +39,7 @@ def set_default_env():
 def main():
     try:
         set_default_env()
+        core.debug(f'Running with: before = {os.environ["INPUT_BEFORE"]}')
         commit = search_commits()
         core.set_output('commit', commit)
     except Exception as e:
