@@ -1,0 +1,19 @@
+name: "action-find-commit"
+description: "Action to find a commit that matches a set of filters."
+author: "Purdue ECE"
+inputs:
+  repository:
+    description: "Repository name with owner. For example, PurdueECE/action-find-commit"
+    default: ${{ github.repository }}
+  token:
+    description: "Personal access token."
+    default: ${{ github.token }}
+  before:
+    description: "Find commit closest to but before a timestamp (ISO 8601 format)."
+    required: false
+outputs:
+  commit:
+    description: SHA of commit that was found.
+runs:
+  using: "docker"
+  image: "Dockerfile"
