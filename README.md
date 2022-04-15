@@ -1,30 +1,21 @@
-# Find Repos Action
+# Find Commit Action
 
-This action will search an organization for repos that match a provided RegEx pattern.
+This aciton will search a repo for a commit that matches a set of filters.
 
 # Usage
 ```yaml
-- uses: PurdueECE/action-find-repos@v1.0
-  id: get_repos
+- uses: PurdueECE/action-find-commit@main
+  id: get_commit
   with:
-    # Org to search in
-    org: PurdueECE364
-    # Personal access token
+    # Repository name with owner. Defaults to ${{ github.repository }}
+    repository: 'PurdueECE/action-find-commit'
+    # Personal access token. Defaults to ${{ github.token }}
     token: ${{ github.token }}
-    # Pattern to match against
-    pattern: ^prelabs-.*$
-    # Earliest creation date (DD/MM/YY HH:MM:SS). Defaults to '01/01/1970 00:00:00'.
-    created_after: '01/01/2022 00:00:00'
-    # Latest creation date (DD/MM/YY HH:MM:SS). Defaults to current time.
-    created_before: '01/06/2022 00:00:00'
-# Prints results - output parameters is 'repos'
-- run: "echo results: ${{ steps.get_repos.outputs.repos }}"
+    # Find commit closest to but before a timestamp (ISO 8601 format). Defaults to current time.
+    before: '2022-04-01T23:59:00'
+# Print the resulting SHA that was found.
+- run: "echo results: ${{ steps.get_commit.outputs.commit }}"
 ```
 
 # Testing
-## Unit
 Unit tests are in the `test-unit/` directory. They can be run with `pytest`.
-## Integration
-Integration test cases are in the `test-integration/` directory.
-To test, you must install the [`act`](https://github.com/nektos/act) command line tool.
-After install, run `make test`.
