@@ -1,5 +1,4 @@
 import os
-import re
 from datetime import datetime
 from dateutil import parser
 
@@ -14,7 +13,7 @@ def compare_dt(first: dict, second: dict):
 def search_commits():
     g = Github(os.environ['INPUT_TOKEN'])
     repo = g.get_repo(os.environ['INPUT_REPOSITORY'])
-    commits = repo.get_commits(until= datetime.strptime(os.environ['INPUT_BEFORE'], '%d/%m/%Y %H:%M:%S'))
+    commits = repo.get_commits(until= parser.parse(os.environ['INPUT_BEFORE']))
     result = None; remaining = commits.totalCount; page_num = 0
     while remaining > 0:
         # get next page
@@ -34,8 +33,8 @@ def search_commits():
     return result['sha']
 
 def set_default_env():
-    os.environ.setdefault('INPUT_BEFORE', datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
     os.environ.setdefault('INPUT_TOKEN', os.environ.get('GITHUB_TOKEN', ''))
+    os.environ.setdefault('INPUT_BEFORE', datetime.utcnow().isoformat())
 
 def main():
     try:

@@ -4,7 +4,7 @@ from unittest import mock
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE364/prelabs-moffatw",
-    "INPUT_BEFORE": '04/10/2022 00:00:00',
+    "INPUT_BEFORE": '2022-04-01T17:36:16.537880',
     })
 def test_ece364sp22prelabs():
     main()
