@@ -15,6 +15,11 @@ This aciton will search a repo for a commit that matches a set of filters.
     before: '2022-04-01T23:59:00'
 # Print the resulting SHA that was found.
 - run: "echo results: ${{ steps.get_commit.outputs.commit }}"
+# Checkout repo at found commit
+- uses: actions/checkout@v3
+  with:
+    repository: 'PurdueECE/action-find-commit'
+    ref: '${{ steps.get_commit.outputs.commit }}'
 ```
 
 # Testing
