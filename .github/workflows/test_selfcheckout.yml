@@ -2,7 +2,7 @@ name: Self Checkout Test
 on: [push]
 
 jobs:
-  test_print:
+  test_selfcheckout:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
