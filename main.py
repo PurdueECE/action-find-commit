@@ -33,8 +33,7 @@ def search_commits():
     return result['sha']
 
 def set_default_env():
-    os.environ.setdefault('INPUT_TOKEN', os.environ.get('GITHUB_TOKEN', ''))
-    os.environ.setdefault('INPUT_BEFORE', datetime.utcnow().isoformat())
+    os.environ['INPUT_BEFORE'] = os.getenv('INPUT_BEFORE') or datetime.utcnow().isoformat()
 
 def main():
     try:
