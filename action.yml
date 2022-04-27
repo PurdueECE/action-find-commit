@@ -10,6 +10,8 @@ inputs:
     default: ${{ github.token }}
   before:
     description: "Find commit closest to but before a timestamp (ISO 8601 format)."
+  sha:
+    description: "SHA or branch to start listing commits from. Defaults to the repository's default branch."
 outputs:
   commit:
     description: SHA of commit that was found.

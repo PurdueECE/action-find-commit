@@ -13,6 +13,8 @@ This aciton will search a repo for a commit that matches a set of filters.
     token: ${{ github.token }}
     # Find commit closest to but before a timestamp (ISO 8601 format). Defaults to current time.
     before: '2022-04-01T23:59:00'
+    # SHA or branch to start listing commits from. Defaults to the repository's default branch.
+    sha: 'main'
 # Print the resulting SHA that was found.
 - run: "echo results: ${{ steps.get_commit.outputs.commit }}"
 # Checkout repo at found commit
