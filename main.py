@@ -13,7 +13,7 @@ def compare_dt(first: dict, second: dict):
 def search_commits():
     g = Github(os.environ['INPUT_TOKEN'])
     repo = g.get_repo(os.environ['INPUT_REPOSITORY'])
-    commits = repo.get_commits(sha=os.getenv('INPUT_SHA') or GithubObject.NotSet, until= parser.parse(os.environ['INPUT_BEFORE']))
+    commits = repo.get_commits(sha=os.getenv('INPUT_SHA') or GithubObject.NotSet, since=parser.parse(os.environ['INPUT_AFTER']), until=parser.parse(os.environ['INPUT_BEFORE']))
     result = None; remaining = commits.totalCount; page_num = 0
     while remaining > 0:
         # get next page
@@ -33,12 +33,13 @@ def search_commits():
     return result['sha']
 
 def set_default_env():
+    os.environ['INPUT_AFTER'] = os.getenv('INPUT_AFTER') or datetime.min.isoformat()
     os.environ['INPUT_BEFORE'] = os.getenv('INPUT_BEFORE') or datetime.utcnow().isoformat()
 
 def main():
     try:
         set_default_env()
-        core.debug(f'Running with: before = {os.environ["INPUT_BEFORE"]}')
+        core.debug(f'Running with: after = {os.environ["INPUT_AFTER"]}, before = {os.environ["INPUT_BEFORE"]}')
         commit = search_commits()
         core.set_output('commit', commit)
     except Exception as e:

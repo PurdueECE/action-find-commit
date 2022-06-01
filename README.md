@@ -11,9 +11,11 @@ This aciton will search a repo for a commit that matches a set of filters.
     repository: 'PurdueECE/action-find-commit'
     # Personal access token. Defaults to ${{ github.token }}
     token: ${{ github.token }}
+    # Find commits after a timestamp (ISO 8601 format). Defaults to current time.
+    after: '2022-03-01T23:59:00'
     # Find commit closest to but before a timestamp (ISO 8601 format). Defaults to current time.
     before: '2022-04-01T23:59:00'
-    # SHA or branch to start listing commits from. Defaults to the repository's default branch.
+    # SHA or branch to start searching commits from. Defaults to the repository's default branch.
     sha: 'main'
 # Print the resulting SHA that was found.
 - run: "echo results: ${{ steps.get_commit.outputs.commit }}"

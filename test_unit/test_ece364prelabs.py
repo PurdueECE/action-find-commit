@@ -1,10 +1,28 @@
 import os
 from main import main
 from unittest import mock
+from pytest import raises
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE364/prelabs-moffatw",
-    "INPUT_BEFORE": '2022-04-01T17:36:16.537880',
     })
-def test_ece364sp22prelabs():
+def test_ece364prelabs():
     main()
+
+@mock.patch.dict(os.environ, {
+    "INPUT_REPOSITORY": "PurdueECE364/prelabs-moffatw",
+    "INPUT_AFTER": '2022-03-27T11:59:59-04:00',
+    "INPUT_BEFORE": '2022-04-01T11:59:59-04:00',
+    })
+def test_windowed():
+    main()
+
+@mock.patch.dict(os.environ, {
+    "INPUT_REPOSITORY": "PurdueECE364/prelabs-moffatw",
+    "INPUT_AFTER": '2022-03-28T11:59:59-04:00',
+    "INPUT_BEFORE": '2022-04-01T11:59:59-04:00',
+    })
+def test_windowed_fail():
+    # SystemExit exception must be thrown
+    with raises(SystemExit):
+        main()
