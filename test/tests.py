@@ -4,7 +4,7 @@ from unittest import mock
 from pytest import raises
 
 @mock.patch.dict(os.environ, {
-    "INPUT_REPOSITORY": "PurdueECE364/prelabs-moffatw",
+    "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
     })
 def test_basic():
     main()
