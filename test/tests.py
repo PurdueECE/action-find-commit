@@ -10,26 +10,35 @@ def test_basic():
     main()
 
 @mock.patch.dict(os.environ, {
-    "INPUT_REPOSITORY": "PurdueECE364/prelabs-DOESNOTEXIST",
+    "INPUT_REPOSITORY": "PurdueECE/nonexistent-repo",
     })
 def test_basic_fail():
     with raises(SystemExit) as e:
         main()
 
 @mock.patch.dict(os.environ, {
-    "INPUT_REPOSITORY": "PurdueECE364/prelabs-moffatw",
-    "INPUT_AFTER": '2022-03-27T11:59:59-04:00',
-    "INPUT_BEFORE": '2022-04-01T11:59:59-04:00',
+    "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
+    "INPUT_AFTER": '2022-04-14T11:59:59-04:00',
+    "INPUT_BEFORE": '2022-04-26T11:59:59-04:00',
     })
 def test_windowed():
     main()
 
 @mock.patch.dict(os.environ, {
-    "INPUT_REPOSITORY": "PurdueECE364/prelabs-moffatw",
+    "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
     "INPUT_AFTER": '2022-03-28T11:59:59-04:00',
+    "INPUT_BEFORE": '2022-04-14T11:59:59-04:00',
+    })
+def test_windowed_nocommit_fail():
+    with raises(SystemExit) as e:
+        main()
+
+@mock.patch.dict(os.environ, {
+    "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
+    "INPUT_AFTER": '2022-04-02T11:59:59-04:00',
     "INPUT_BEFORE": '2022-04-01T11:59:59-04:00',
     })
-def test_windowed_fail():
+def test_windowed_invalid_fail():
     with raises(SystemExit) as e:
         main()
 
@@ -44,7 +53,7 @@ def test_tagged():
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
     "INPUT_TAG": "v0",
     })
-def test_tagged_fail():
+def test_tagged_notag():
     with raises(SystemExit) as e:
         main()
 

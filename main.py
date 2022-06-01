@@ -3,7 +3,7 @@ from datetime import datetime
 from dateutil import parser
 
 from actions_toolkit import core
-from github import Github, GithubObject, Tag
+from github import Github, GithubObject
 from github.Repository import Repository
 
 def compare_dt(first: dict, second: dict):
@@ -23,7 +23,7 @@ def search_bycommit(repo: Repository):
         # update indeces
         remaining -= len(page_results)
         page_num += 1
-    return result['sha']
+    return result
 
 def search_bytag(repo: Repository):
     tags = repo.get_tags()
@@ -44,15 +44,15 @@ def search_bytag(repo: Repository):
         # update indeces
         remaining -= len(page_results)
         page_num += 1
-    return result['sha']
+    return result
 
 def search():
-    g = Github(os.environ['INPUT_TOKEN'])
+    g = Github(os.getenv('INPUT_TOKEN'))
     repo = g.get_repo(os.environ['INPUT_REPOSITORY'])
     result = search_bytag(repo) if 'INPUT_TAG' in os.environ else search_bycommit(repo)
     if result == None:
         raise Exception(f'No commit found.')
-    return result
+    return result['sha']
 
 def setup():
     os.environ['INPUT_AFTER'] = os.getenv('INPUT_AFTER') or datetime.min.isoformat()
@@ -67,7 +67,7 @@ def main():
         commit = search()
         core.set_output('commit', commit)
     except Exception as e:
-        core.set_failed(str(e))
+        core.set_failed(e)
         
 if __name__ == "__main__":
     main()
