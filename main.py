@@ -12,7 +12,7 @@ def compare_dt(first: dict, second: dict):
     return 1 if dt1 > dt2 else -1 if dt1 < dt2 else 0
 
 def search_bycommit(repo: Repository):
-    commits = repo.get_commits(sha=os.getenv('INPUT_SHA') or GithubObject.NotSet, since=parser.parse(os.environ['INPUT_AFTER']), until=parser.parse(os.environ['INPUT_BEFORE']))
+    commits = repo.get_commits(sha=os.getenv('INPUT_SHA') or GithubObject.NotSet, since=parser.parse(os.environ['INPUT_AFTER']) or GithubObject.NotSet, until=parser.parse(os.environ['INPUT_BEFORE']) or GithubObject.NotSet)
     result = None; remaining = commits.totalCount; page_num = 0
     while remaining > 0:
         # get next page
