@@ -26,6 +26,8 @@ def search_bycommit(repo: Repository):
     return result
 
 def search_bytag(repo: Repository):
+    after = parser.parse(os.environ['INPUT_AFTER'])
+    before = parser.parse(os.environ['INPUT_BEFORE'])
     tags = repo.get_tags()
     result = None; remaining = tags.totalCount; page_num = 0
     while remaining > 0:
@@ -38,9 +40,12 @@ def search_bytag(repo: Repository):
             ## tag filter
             matches.append(tag.name == os.environ['INPUT_TAG'])
             ## time window filter
+            timestamp = parser.parse(tag.commit.last_modified)
+            matches.append(after <= timestamp <= before)
+            ## most recent filter
             matches.append(result == None or compare_dt(result, commit) < 0)
-            if all(matches):
-                result = commit
+            ## check filters
+            result = commit if all(matches) else result
         # update indeces
         remaining -= len(page_results)
         page_num += 1
