@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from dateutil import parser
 
 from actions_toolkit import core
@@ -60,8 +60,8 @@ def search():
     return result['sha']
 
 def setup():
-    os.environ['INPUT_AFTER'] = os.getenv('INPUT_AFTER') or datetime.min.isoformat()
-    os.environ['INPUT_BEFORE'] = os.getenv('INPUT_BEFORE') or datetime.utcnow().isoformat()
+    os.environ['INPUT_AFTER'] = os.getenv('INPUT_AFTER') or datetime.min.replace(tzinfo=timezone.utc).isoformat()
+    os.environ['INPUT_BEFORE'] = os.getenv('INPUT_BEFORE') or datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
     if os.getenv('INPUT_SHA') and os.getenv('INPUT_TAG'):
         raise Exception('Cannot filter by tag and by SHA')
 
