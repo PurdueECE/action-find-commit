@@ -1,9 +1,11 @@
-name: Self Checkout Test
+name: Integration Tests
 on: [push]
 
 jobs:
   test_selfcheckout:
     runs-on: ubuntu-latest
+    env:
+      INPUT_TOKEN: '${{ secrets.GEOFF_PAT }}'
     steps:
       - uses: actions/checkout@v3
       - id: get_commit
