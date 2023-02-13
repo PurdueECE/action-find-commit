@@ -22,7 +22,7 @@ def test_basic_fail():
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
-    "INPUT_AFTER": '2022/03/28 11:59:59 GMT',
+    "INPUT_AFTER": '2022/03/28 23:59:59 GMT',
     "INPUT_BEFORE": 'Wed, 27 Apr 2022 01:54:37 GMT',
 })
 def test_bad_timestamp():
@@ -32,8 +32,8 @@ def test_bad_timestamp():
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
-    "INPUT_AFTER": '2022-04-25T11:59:59-04:00',
-    "INPUT_BEFORE": '2022-04-27T11:59:59-04:00',
+    "INPUT_AFTER": '2022-04-25T23:59:59-04:00',
+    "INPUT_BEFORE": '2022-04-27T23:59:59-04:00',
 })
 def test_windowed():
     main()
@@ -42,8 +42,8 @@ def test_windowed():
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
-    "INPUT_AFTER": '2022-03-28T11:59:59-04:00',
-    "INPUT_BEFORE": '2022-04-14T11:59:59-04:00',
+    "INPUT_AFTER": '2022-03-28T23:59:59-04:00',
+    "INPUT_BEFORE": '2022-04-14T23:59:59-04:00',
 })
 def test_windowed_nocommit_fail():
     with raises(SystemExit) as e:
@@ -52,8 +52,8 @@ def test_windowed_nocommit_fail():
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
-    "INPUT_AFTER": '2022-04-02T11:59:59-04:00',
-    "INPUT_BEFORE": '2022-04-01T11:59:59-04:00',
+    "INPUT_AFTER": '2022-04-02T23:59:59-04:00',
+    "INPUT_BEFORE": '2022-04-01T23:59:59-04:00',
 })
 def test_windowed_invalid_fail():
     with raises(SystemExit) as e:
