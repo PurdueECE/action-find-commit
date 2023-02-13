@@ -75,10 +75,10 @@ def search():
 
 
 def setup():
-    os.environ['INPUT_AFTER'] = os.getenv(
-        'INPUT_AFTER') or datetime.min.replace(tzinfo=timezone.utc).isoformat()
-    os.environ['INPUT_BEFORE'] = os.getenv(
-        'INPUT_BEFORE') or datetime.max.replace(tzinfo=timezone.utc).isoformat()
+    os.environ.setdefault(
+        'INPUT_AFTER', datetime.min.replace(tzinfo=timezone.utc).isoformat())
+    os.environ.setdefault(
+        'INPUT_BEFORE', datetime.utcnow().replace(tzinfo=timezone.utc).isoformat())
     if os.getenv('INPUT_SHA') and os.getenv('INPUT_TAG'):
         raise Exception('Cannot filter by tag and by SHA')
 
