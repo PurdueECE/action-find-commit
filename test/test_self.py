@@ -32,6 +32,15 @@ def test_bad_timestamp():
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
+    "INPUT_BEFORE": '2022-04-27T23:59:59-04:00',
+})
+def test_before():
+    main()
+    assert os.environ['OUTPUT_COMMIT'] == '61d8b4ee576df170757e2863c565a274699af2a9'
+
+
+@mock.patch.dict(os.environ, {
+    "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
     "INPUT_AFTER": '2022-04-25T23:59:59-04:00',
     "INPUT_BEFORE": '2022-04-27T23:59:59-04:00',
 })
