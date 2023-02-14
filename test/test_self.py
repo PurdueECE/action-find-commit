@@ -22,10 +22,10 @@ def test_basic_fail():
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
-    "INPUT_AFTER": '2022/03/28 23:59:59 GMT',
-    "INPUT_BEFORE": 'Wed, 27 Apr 2022 01:54:37 GMT',
+    "INPUT_AFTER": '28/03/2022 23:59:59 GMT',
+    "INPUT_BEFORE": '2023/01/01 23:59:59-05:00',
 })
-def test_bad_timestamp():
+def test_other_timestamp():
     main()
 
 
