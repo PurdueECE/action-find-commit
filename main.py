@@ -16,8 +16,8 @@ def compare_dt(first: dict, second: dict):
 
 
 def search_bycommit(repo: Repository):
-    commits = repo.get_commits(sha=os.getenv('INPUT_SHA') or GithubObject.NotSet, since=datetime.fromisoformat(
-        os.environ['INPUT_AFTER']), until=datetime.fromisoformat(os.environ['INPUT_BEFORE']))
+    commits = repo.get_commits(sha=os.getenv('INPUT_SHA') or GithubObject.NotSet, since=parser.parse(
+        os.environ['INPUT_AFTER']), until=parser.parse(os.environ['INPUT_BEFORE']))
     result = None
     remaining = commits.totalCount
     page_num = 0
@@ -35,8 +35,8 @@ def search_bycommit(repo: Repository):
 
 
 def search_bytag(repo: Repository):
-    after = datetime.fromisoformat(os.environ['INPUT_AFTER'])
-    before = datetime.fromisoformat(os.environ['INPUT_BEFORE'])
+    after = parser.parse(os.environ['INPUT_AFTER'])
+    before = parser.parse(os.environ['INPUT_BEFORE'])
     tags: PaginatedList[Tag] = repo.get_tags()
     result = None
     remaining = tags.totalCount
