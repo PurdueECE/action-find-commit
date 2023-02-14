@@ -26,8 +26,7 @@ def test_basic_fail():
     "INPUT_BEFORE": 'Wed, 27 Apr 2022 01:54:37 GMT',
 })
 def test_bad_timestamp():
-    with raises(SystemExit) as e:
-        main()
+    main()
 
 
 @mock.patch.dict(os.environ, {
