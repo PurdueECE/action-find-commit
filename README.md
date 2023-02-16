@@ -25,7 +25,7 @@ This aciton will search a repo for a commit that matches a set of filters.
   with:
     # Repository name with owner. Defaults to ${{ github.repository }}
     repository: 'PurdueECE/action-find-commit'
-    # Find commits after a timestamp (ISO 8601 format). Defaults to current time.
+    # Find commits after a timestamp (ISO 8601 format).
     after: '2022-03-01T23:59:00'
     # Find commit closest to but before a timestamp (ISO 8601 format). Defaults to current time.
     before: '2022-04-01T23:59:00'

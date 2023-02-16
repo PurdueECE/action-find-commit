@@ -76,7 +76,7 @@ def search():
 
 def setup():
     os.environ.setdefault(
-        'INPUT_AFTER', datetime.min.replace(tzinfo=timezone.utc).isoformat())
+        'INPUT_AFTER', datetime(1970, 1, 1).replace(tzinfo=timezone.utc).isoformat())
     os.environ.setdefault(
         'INPUT_BEFORE', datetime.utcnow().replace(tzinfo=timezone.utc).isoformat())
     if os.getenv('INPUT_SHA') and os.getenv('INPUT_TAG'):
