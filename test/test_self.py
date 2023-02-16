@@ -23,7 +23,7 @@ def test_basic_fail():
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
     "INPUT_AFTER": '28/03/2022 23:59:59 GMT',
-    "INPUT_BEFORE": '2023-01-15T23:59:59-05:00',
+    "INPUT_BEFORE": '2023-01-15 23:59:59-05:00',
 })
 def test_other_timestamp():
     main()
@@ -31,7 +31,7 @@ def test_other_timestamp():
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
-    "INPUT_BEFORE": '2022-04-27T23:59:59-04:00',
+    "INPUT_BEFORE": '2022-04-27 23:59:59-04:00',
 })
 def test_before():
     main()
@@ -40,8 +40,8 @@ def test_before():
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
-    "INPUT_AFTER": '2022-04-25T23:59:59-04:00',
-    "INPUT_BEFORE": '2022-04-27T23:59:59-04:00',
+    "INPUT_AFTER": '2022-04-25 23:59:59-04:00',
+    "INPUT_BEFORE": '2022-04-27 23:59:59-04:00',
 })
 def test_windowed():
     main()
@@ -50,8 +50,8 @@ def test_windowed():
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
-    "INPUT_AFTER": '2022-03-28T23:59:59-04:00',
-    "INPUT_BEFORE": '2022-04-14T23:59:59-04:00',
+    "INPUT_AFTER": '2022-03-28 23:59:59-04:00',
+    "INPUT_BEFORE": '2022-04-14 23:59:59-04:00',
 })
 def test_windowed_nocommit_fail():
     with raises(SystemExit) as e:
@@ -60,8 +60,8 @@ def test_windowed_nocommit_fail():
 
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
-    "INPUT_AFTER": '2022-04-02T23:59:59-04:00',
-    "INPUT_BEFORE": '2022-04-01T23:59:59-04:00',
+    "INPUT_AFTER": '2022-04-02 23:59:59-04:00',
+    "INPUT_BEFORE": '2022-04-01 23:59:59-04:00',
 })
 def test_windowed_invalid_fail():
     with raises(SystemExit) as e:
@@ -80,8 +80,8 @@ def test_tagged():
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
     "INPUT_TAG": "v1",
-    "INPUT_AFTER": "2022-04-27T01:54:35-00:00",
-    "INPUT_BEFORE": "2022-04-27T01:54:37-00:00",
+    "INPUT_AFTER": "2022-04-27 01:54:35-00:00",
+    "INPUT_BEFORE": "2022-04-27 01:54:37-00:00",
 })
 def test_tagged_timewindow():
     main()
@@ -91,7 +91,7 @@ def test_tagged_timewindow():
 @mock.patch.dict(os.environ, {
     "INPUT_REPOSITORY": "PurdueECE/action-find-commit",
     "INPUT_TAG": "v1",
-    "INPUT_AFTER": "2022-04-27T01:54:37-00:00",
+    "INPUT_AFTER": "2022-04-27 01:54:37-00:00",
 })
 def test_tagged_timewindow_notfound():
     with raises(SystemExit) as e:
