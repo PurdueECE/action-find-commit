@@ -94,7 +94,7 @@ def main():
     try:
         args = setup()
         core.debug('args: {0}'.format(
-            json.dumps({**args, 'INPUT_TOKEN': '***'})))
+            json.dumps({**args, 'INPUT_TOKEN': '***', 'INPUT_BEFORE': args['INPUT_BEFORE'].isoformat(), 'INPUT_AFTER': args['INPUT_AFTER'].isoformat()})))
         commit = search(args)
         core.set_output('commit', commit)
         core.export_variable('OUTPUT_COMMIT', commit)
