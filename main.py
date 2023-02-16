@@ -15,9 +15,9 @@ def compare_dt(first: dict, second: dict):
     return 1 if dt1 > dt2 else -1 if dt1 < dt2 else 0
 
 
-def search_bycommit(repo: Repository):
-    commits = repo.get_commits(sha=os.getenv('INPUT_SHA') or GithubObject.NotSet, since=parser.parse(
-        os.environ['INPUT_AFTER']), until=parser.parse(os.environ['INPUT_BEFORE']))
+def search_bycommit(repo: Repository, args: dict):
+    commits = repo.get_commits(sha=args[
+        'INPUT_SHA'] or GithubObject.NotSet, since=args['INPUT_AFTER'], until=args['INPUT_BEFORE'])
     result = None
     remaining = commits.totalCount
     page_num = 0
@@ -26,17 +26,15 @@ def search_bycommit(repo: Repository):
         page_results = commits.get_page(page_num)
         for commit in page_results:
             commit = commit.raw_data
-            result = commit if result == None or compare_dt(
-                result, commit) < 0 else result
+            if result == None or compare_dt(result, commit) < 0:
+                result = commit
         # update indeces
         remaining -= len(page_results)
         page_num += 1
     return result
 
 
-def search_bytag(repo: Repository):
-    after = parser.parse(os.environ['INPUT_AFTER'])
-    before = parser.parse(os.environ['INPUT_BEFORE'])
+def search_bytag(repo: Repository, args: dict):
     tags: PaginatedList[Tag] = repo.get_tags()
     result = None
     remaining = tags.totalCount
@@ -50,10 +48,11 @@ def search_bytag(repo: Repository):
             # filters
             matches = []
             # tag filter
-            matches.append(tag.name == os.environ['INPUT_TAG'])
+            matches.append(tag.name == args['INPUT_TAG'])
             # time window filter
             timestamp = parser.parse(tag.commit.last_modified)
-            matches.append(after <= timestamp <= before)
+            matches.append(args['INPUT_AFTER'] <=
+                           timestamp <= args['INPUT_BEFORE'])
             # most recent filter
             matches.append(result == None or compare_dt(result, commit) < 0)
             # check filters
@@ -64,31 +63,38 @@ def search_bytag(repo: Repository):
     return result
 
 
-def search():
-    g = Github(os.getenv('INPUT_TOKEN'))
-    repo = g.get_repo(os.environ['INPUT_REPOSITORY'])
-    result = search_bytag(
-        repo) if 'INPUT_TAG' in os.environ else search_bycommit(repo)
+def search(args):
+    repo = Github(args['INPUT_TOKEN']).get_repo(args['INPUT_REPOSITORY'])
+    if args['INPUT_TAG']:
+        result = search_bytag(repo, args)
+    else:
+        result = search_bycommit(repo, args)
     if result == None:
         raise Exception(f'No commit found.')
     return result['sha']
 
 
 def setup():
-    os.environ.setdefault(
-        'INPUT_AFTER', datetime(1970, 1, 1).replace(tzinfo=timezone.utc).isoformat())
-    os.environ.setdefault(
-        'INPUT_BEFORE', datetime.utcnow().replace(tzinfo=timezone.utc).isoformat())
-    if os.getenv('INPUT_SHA') and os.getenv('INPUT_TAG'):
+    if os.environ.get('INPUT_SHA') and os.environ.get('INPUT_TAG'):
         raise Exception('Cannot filter by tag and by SHA')
+    return {
+        'INPUT_TOKEN': os.environ.get('INPUT_TOKEN'),
+        'INPUT_REPOSITORY': os.environ['INPUT_REPOSITORY'],
+        'INPUT_SHA': os.environ.get('INPUT_SHA'),
+        'INPUT_TAG': os.environ.get('INPUT_TAG'),
+        'INPUT_AFTER': parser.parse(
+            os.environ.get('INPUT_AFTER', datetime(1970, 1, 1).replace(tzinfo=timezone.utc).isoformat())),
+        'INPUT_BEFORE': parser.parse(
+            os.environ.get('INPUT_BEFORE', datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()))
+    }
 
 
 def main():
     try:
-        setup()
+        args = setup()
         core.debug(
-            f'Running with: after = {os.environ["INPUT_AFTER"]}, before = {os.environ["INPUT_BEFORE"]}')
-        commit = search()
+            f'Running with: after = {args["INPUT_AFTER"]}, before = {args["INPUT_BEFORE"]}')
+        commit = search(args)
         core.set_output('commit', commit)
         core.export_variable('OUTPUT_COMMIT', commit)
     except Exception as e:
