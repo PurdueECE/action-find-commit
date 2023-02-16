@@ -1,11 +1,12 @@
+import json
 import os
 from datetime import datetime, timezone
-from dateutil import parser
 
 from actions_toolkit import core
+from dateutil import parser
 from github import Github, GithubObject
-from github.Repository import Repository
 from github.PaginatedList import PaginatedList
+from github.Repository import Repository
 from github.Tag import Tag
 
 
@@ -92,8 +93,8 @@ def setup():
 def main():
     try:
         args = setup()
-        core.debug(
-            f'Running with: after = {args["INPUT_AFTER"]}, before = {args["INPUT_BEFORE"]}')
+        core.debug('args: {0}'.format(
+            json.dump({**args, 'INPUT_TOKEN': '***'})))
         commit = search(args)
         core.set_output('commit', commit)
         core.export_variable('OUTPUT_COMMIT', commit)
