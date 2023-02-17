@@ -10,12 +10,16 @@ inputs:
     default: ${{ github.token }}
   after:
     description: "Find commits after a timestamp (ISO 8601 format)."
+    default: null
   before:
     description: "Find commit closest to but before a timestamp (ISO 8601 format)."
+    default: null
   sha:
     description: "SHA or branch to start searching commits from. Defaults to the repository's default branch. Cannot be used with tag."
+    default: null
   tag:
     description: "Commit tag to search for. Cannot be used with sha."
+    default: null
 outputs:
   commit:
     description: SHA of commit that was found.

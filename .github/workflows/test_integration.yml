@@ -2,7 +2,37 @@ name: Integration Tests
 on: push
 
 jobs:
-  test:
+  test_before:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        id: find_commit
+        with:
+          token: ${{ secrets.GEOFF_PAT }}
+          repository: PurdueECE/action-find-commit
+          before: '2022/07/28 23:59:59-05:00'
+      - run: |
+          [ "${{ steps.find_commit.outputs.commit }}" = "4ee02fd6118d0e81b9310a83cfc71d30f2a9be4f" ]
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_commit.outputs.commit }}
+          path: tmp
+  test_after:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        id: find_commit
+        with:
+          token: ${{ secrets.GEOFF_PAT }}
+          repository: PurdueECE/action-find-commit
+          after: '2022/06/01 23:59:59-05:00'
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_commit.outputs.commit }}
+          path: tmp
+  test_windowed:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -15,6 +45,22 @@ jobs:
           before: '2022/07/28 23:59:59-05:00'
       - run: |
           [ "${{ steps.find_commit.outputs.commit }}" = "4ee02fd6118d0e81b9310a83cfc71d30f2a9be4f" ]
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_commit.outputs.commit }}
+          path: tmp
+  test_tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        id: find_commit
+        with:
+          token: ${{ secrets.GEOFF_PAT }}
+          repository: PurdueECE/action-find-commit
+          sha: 'v1'
+      - run: |
+          [ "${{ steps.find_commit.outputs.commit }}" = "61d8b4ee576df170757e2863c565a274699af2a9" ]
       - uses: actions/checkout@v3
         with:
           ref: ${{ steps.get_commit.outputs.commit }}
