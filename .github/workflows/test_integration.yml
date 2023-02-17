@@ -7,7 +7,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./
+        id: find_commit
         with:
           token: ${{ secrets.GEOFF_PAT }}
           repository: PurdueECE/action-find-commit
-          before: '2023/01/15 23:59:59-05:00'
+          after: '2022/06/01 23:59:59-05:00'
+          before: '2022/07/29 23:59:59-05:00'
+      - run: |
+          [ "${{ steps.find_commit.outputs.commit }}" = "4ee02fd6118d0e81b9310a83cfc71d30f2a9be4f" ]
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_commit.outputs.commit }}
+          path: tmp
