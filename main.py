@@ -81,13 +81,15 @@ def setup():
     if not os.environ.get('INPUT_AFTER'):
         os.environ['INPUT_AFTER'] = datetime(
             1970, 1, 1).replace(tzinfo=timezone.utc).isoformat()
-        core.notice(
+        core.debug(
             f"INPUT_AFTER is empty, defaulting to {os.environ['INPUT_AFTER']}")
     if not os.environ.get('INPUT_BEFORE'):
         os.environ['INPUT_BEFORE'] = datetime.utcnow().replace(
             tzinfo=timezone.utc).isoformat()
-        core.notice(
+        core.debug(
             f"INPUT_BEFORE is empty, defaulting to {os.environ['INPUT_BEFORE']}")
+    if os.environ['INPUT_AFTER'] > os.environ['INPUT_BEFORE']:
+        raise Exception('INPUT_AFTER must come before INPUT_BEFORE.')
     return {
         'INPUT_TOKEN': os.environ.get('INPUT_TOKEN'),
         'INPUT_REPOSITORY': os.environ['INPUT_REPOSITORY'],
