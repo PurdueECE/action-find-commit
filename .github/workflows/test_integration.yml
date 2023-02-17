@@ -41,8 +41,8 @@ jobs:
         with:
           token: ${{ secrets.GEOFF_PAT }}
           repository: PurdueECE/action-find-commit
-          after: '2022/06/01 23:59:59-05:00'
-          before: '2022/07/28 23:59:59-05:00'
+          after: '2022-06-01T23:59:59-05:00'
+          before: '2022-07-28T23:59:59-05:00'
       - run: |
           [ "${{ steps.find_commit.outputs.commit }}" = "4ee02fd6118d0e81b9310a83cfc71d30f2a9be4f" ]
       - uses: actions/checkout@v3
