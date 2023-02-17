@@ -78,15 +78,23 @@ def search(args):
 def setup():
     if os.environ.get('INPUT_SHA') and os.environ.get('INPUT_TAG'):
         raise Exception('Cannot filter by tag and by SHA')
+    if not os.environ.get('INPUT_AFTER'):
+        os.environ['INPUT_AFTER'] = datetime(
+            1970, 1, 1).replace(tzinfo=timezone.utc).isoformat()
+        core.notice(
+            f"INPUT_AFTER is empty, defaulting to {os.environ['INPUT_AFTER']}")
+    if not os.environ.get('INPUT_BEFORE'):
+        os.environ['INPUT_BEFORE'] = datetime.utcnow().replace(
+            tzinfo=timezone.utc).isoformat()
+        core.notice(
+            f"INPUT_BEFORE is empty, defaulting to {os.environ['INPUT_BEFORE']}")
     return {
         'INPUT_TOKEN': os.environ.get('INPUT_TOKEN'),
         'INPUT_REPOSITORY': os.environ['INPUT_REPOSITORY'],
         'INPUT_SHA': os.environ.get('INPUT_SHA'),
         'INPUT_TAG': os.environ.get('INPUT_TAG'),
-        'INPUT_AFTER': parser.parse(
-            os.environ.get('INPUT_AFTER', datetime(1970, 1, 1).replace(tzinfo=timezone.utc).isoformat())),
-        'INPUT_BEFORE': parser.parse(
-            os.environ.get('INPUT_BEFORE', datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()))
+        'INPUT_AFTER': parser.parse(os.environ.get('INPUT_AFTER')),
+        'INPUT_BEFORE': parser.parse(os.environ.get('INPUT_BEFORE')),
     }
 
 
