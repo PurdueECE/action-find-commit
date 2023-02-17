@@ -13,7 +13,7 @@ inputs:
   before:
     description: "Find commit closest to but before a timestamp (ISO 8601 format)."
   sha:
-    description: "SHA or branch to start searching commits from. Defaults to the repository's default branch."
+    description: "SHA or branch to start searching commits from. Defaults to the repository's default branch. Cannot be used with tag."
   tag:
     description: "Commit tag to search for. Cannot be used with sha."
 outputs:
